@@ -6,6 +6,7 @@ class CashRegister
     @total = 0
     @items = []
     @last_item_price = 0
+    @last_item = ""
     self.discount = discount_number
   end
   
@@ -13,10 +14,11 @@ class CashRegister
     @total += (price * quantity)
     quantity.times{@items.push(title)}
     @last_item_price = price
+    @last_item = title
   end
   
   def apply_discount
-    if discount > 0
+    if self.discount > 0
       @total -= @total * (self.discount / 100.00)
       "After the discount, the total comes to $#{@total.to_i}."
     else 
@@ -26,8 +28,7 @@ class CashRegister
   
   def void_last_transaction
     #binding.pry
-    @items.uniq!
-    @items.pop
+    @items.reject!{|obj| obj == @last_item}
     @total -= @last_item_price
      #binding.pry
     unless @items[0]
